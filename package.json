@@ -1,0 +1,31 @@
+{
+  "name": "snake3d",
+  "version": "0.0.1",
+  "description": "react 3d learning project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/webpack --progress -p --define process.env.NODE_ENV='\"production\"'",
+    "watch": "node_modules/.bin/webpack --progress --watch",
+    "start": "npm run watch & python -m SimpleHTTPServer 3000"
+  },
+  "author": "heganjie",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.9.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-lodash": "^3.1.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "immutable": "^3.8.1",
+    "keyboardjs": "^2.2.0",
+    "lodash": "^4.13.0",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-redux": "^4.4.5",
+    "react-three-renderer": "^2.0.1",
+    "redux": "^3.5.2",
+    "three": "^0.76.1",
+    "webpack": "^1.13.1"
+  }
+}
