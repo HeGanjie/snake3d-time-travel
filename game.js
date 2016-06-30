@@ -38,7 +38,7 @@ const Block = ({position, size = 1, color = 0x00ff00}) => (
     </mesh>
 );
 
-import { startGame, stepForward, goDirection, KeyboardDirection, togglePauseGame } from './actions.js';
+import { startGame, stepForward, goDirection, KeyboardDirection, togglePauseGame, rewindingTime } from './actions.js';
 
 class Game extends React.Component {
     constructor(props, context) {
@@ -60,13 +60,15 @@ class Game extends React.Component {
 
     componentDidMount() {
     	this._renderTrigger();
-    	alert('[R] : StartGame\nArrow Key: Directions');
+    	alert('[R] : StartGame\nArrow Key: Directions\nShift: Rewinding time!');
 
     	let { dispatch } = this.props;
     	const frameInterval = 500;
+
+        var rewindingIntervalId = 0;
     	setInterval(() => {
     		let { movedAt, gameState } = this.props;
-    		if (gameState == GameState.Playing && frameInterval <= Date.now() - movedAt) {
+    		if (gameState == GameState.Playing && frameInterval <= Date.now() - movedAt && rewindingIntervalId === 0) {
     			dispatch(stepForward())
     		}
     	}, frameInterval / 4);
@@ -77,6 +79,12 @@ class Game extends React.Component {
     	keyboardJS.bind('down', e => dispatch(goDirection(KeyboardDirection.Down)));
     	keyboardJS.bind('left', e => dispatch(goDirection(KeyboardDirection.Left)));
     	keyboardJS.bind('p', e => dispatch(togglePauseGame()));
+    	keyboardJS.bind('shift', e => {
+            rewindingIntervalId = setInterval(() => dispatch(rewindingTime()), 200);
+        }, e => {
+            clearInterval(rewindingIntervalId);
+            rewindingIntervalId = 0;
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -130,11 +138,12 @@ class Game extends React.Component {
 
 
 const mapStateToProps = (state) => {
+    let { game } = state;
 	return {
-		gameState: state.get('gameState'),
-		foodPos: state.get('foodPos').toJS(),
-		snakePosSeq: state.get('snakePosSeq').toJS(),
-		movedAt: state.get('movedAt')
+		gameState: game.get('gameState'),
+		foodPos: game.get('foodPos').toJS(),
+		snakePosSeq: game.get('snakePosSeq').toJS(),
+		movedAt: game.get('movedAt')
 	}
 };
 import { connect } from 'react-redux';

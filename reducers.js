@@ -50,7 +50,7 @@ const calcNextStepXY = (currXY, direction) => {
 	}
 }
 
-export const Reducer = (state = initState, action) => {
+const game = (state = initState, action) => {
 	let currGameState = state.get('gameState');
 	switch (action.type) {
 		case "START_GAME":
@@ -115,9 +115,28 @@ export const Reducer = (state = initState, action) => {
 			return state.update('snakePosSeq', imArr => imArr.pop().unshift(imTargetPos));
 		}
 
+		case "REWINDING_TIME_TO":
+		return action.moment;
+
 		default:
 		return state
 	}
 }
 
+const timeLine = (state = Immutable.List(), action) => {
+	switch (action.type) {
+		case "SAVE_GAME_MOMENT":
+		return state.unshift(action.moment);
 
+		case "REWINDING_TIME_TO":
+		return state.shift()
+		
+		default:
+		return state;
+	}
+}
+
+import { combineReducers } from 'redux';
+
+const reducer = combineReducers({ game, timeLine });
+export default reducer;

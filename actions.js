@@ -18,14 +18,27 @@ export const togglePauseGame = () => {
 }
 
 export const stepForward = () => {
-    return {
-        type: "STEP_FORWARD"
+    return (dispatch, getState) => {
+        dispatch({ type: "SAVE_GAME_MOMENT", moment: getState().game})
+        dispatch({ type: "STEP_FORWARD" })
     }
 }
 
 export const goDirection = (keyDir) => {
-    return {
-        type: "GO_DIRECTION",
-        direction: keyDir
+    return (dispatch, getState) => {
+        dispatch({ type: "SAVE_GAME_MOMENT", moment: getState().game})
+        dispatch({
+            type: "GO_DIRECTION",
+            direction: keyDir
+        })
+    }
+}
+
+export const rewindingTime = () => {
+    return (dispatch, getState) => {
+        let { timeLine } = getState();
+        if (timeLine.size !== 0) {
+            dispatch({ type: "REWINDING_TIME_TO", moment: timeLine.first()})
+        }
     }
 }

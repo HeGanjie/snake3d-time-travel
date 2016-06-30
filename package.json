@@ -25,6 +25,7 @@
     "react-redux": "^4.4.5",
     "react-three-renderer": "^2.0.1",
     "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
     "three": "^0.76.1",
     "webpack": "^1.13.1"
   }
